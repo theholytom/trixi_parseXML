@@ -24,7 +24,7 @@ public class ParsingRunService {
 
     public ParsingRun triggerRun() {
         ParsingRun run = repository.save(ParsingRun.starting(Instant.now()));
-        executor.execute();
+        executor.execute(run.getId());
         return repository.findById(run.getId()).orElseThrow();
     }
 

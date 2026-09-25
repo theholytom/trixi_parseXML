@@ -36,4 +36,14 @@ public class ParsingRun {
         newRun.status = RunStatus.RUNNING;
         return newRun;
     }
+
+    public void succeed(Instant finishedAt) {
+        this.finishedAt = finishedAt;
+        status = RunStatus.SUCCESS;
+    }
+
+    public void fail(Instant finishedAt) {
+        this.finishedAt = finishedAt;
+        status = RunStatus.FAILED;
+    }
 }
