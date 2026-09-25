@@ -1,4 +1,4 @@
-package cz.trixi.parsexml.connector;
+package cz.trixi.parsexml.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

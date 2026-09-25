@@ -1,4 +1,4 @@
-package cz.trixi.parsexml.connector;
+package cz.trixi.parsexml.config;
 
 import lombok.Getter;
 import lombok.Setter;

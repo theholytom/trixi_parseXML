@@ -1,7 +1,7 @@
 package cz.trixi.parsexml.api;
 
-import cz.trixi.parsexml.connector.ClientConfig;
-import cz.trixi.parsexml.connector.ClientProperties;
+import cz.trixi.parsexml.config.ClientConfig;
+import cz.trixi.parsexml.config.ClientProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
