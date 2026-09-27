@@ -7,7 +7,7 @@ public record MunicipalityPartResponse(
         Long id,
         String name,
         String code,
-        MunicipalityDto municipalityDto
+        MunicipalityDto municipality
 ) {
     public static MunicipalityPartResponse from(MunicipalityPart m) {
         return new MunicipalityPartResponse(

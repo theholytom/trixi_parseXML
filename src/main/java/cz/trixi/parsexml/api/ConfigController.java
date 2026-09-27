@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
 @RestController
-@RequestMapping("config")
+@RequestMapping("/config")
 public class ConfigController {
 
     private final ClientProperties properties;
