@@ -5,6 +5,8 @@ import cz.trixi.parsexml.persistence.entity.MunicipalityPart;
 import cz.trixi.parsexml.persistence.repository.MunicipalityPartRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MunicipalityPartService {
 
@@ -14,7 +16,7 @@ public class MunicipalityPartService {
         this.repository = repository;
     }
 
-    public MunicipalityPart findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public Optional<MunicipalityPart> findById(Long id) {
+        return repository.findById(id);
     }
 }

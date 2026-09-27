@@ -34,8 +34,11 @@ public class ParsingTaskController {
     }
 
     @GetMapping("/{id}")
-    public RunResponse getRunById(@PathVariable Long id) {
-        return RunResponse.from(service.findById(id));
+    public ResponseEntity<RunResponse> getRunById(@PathVariable Long id) {
+        return service.findById(id)
+                .map(RunResponse::from)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
     @GetMapping

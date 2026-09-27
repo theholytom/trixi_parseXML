@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class ParsingRunService {
@@ -28,8 +29,8 @@ public class ParsingRunService {
         return repository.findById(run.getId()).orElseThrow();
     }
 
-    public ParsingRun findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public Optional<ParsingRun> findById(Long id) {
+        return repository.findById(id);
     }
 
     public Page<RunResponse> searchRuns(RunStatus status, Pageable pageable) {
