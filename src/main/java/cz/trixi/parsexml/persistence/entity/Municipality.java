@@ -19,7 +19,7 @@ public class Municipality {
     @Column(name = "municipality_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String code;
     @Column(nullable = false)
     private String name;

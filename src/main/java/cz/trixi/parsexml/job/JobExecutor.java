@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -123,7 +124,17 @@ public class JobExecutor {
                                 case "CastiObci" -> {
                                     reader.close();
                                     toAdd.setParts(parts);
-                                    municipalityRepository.save(toAdd);
+
+                                    municipalityRepository.findByCode(toAdd.getCode())
+                                            .map(existing -> {
+                                                existing.setName(toAdd.getName());
+                                                existing.setParts(toAdd.getParts());
+                                                for (MunicipalityPart part : existing.getParts()) {
+                                                    part.setMunicipality(existing);
+                                                }
+                                                return municipalityRepository.save(existing);
+                                            }).orElseGet(() -> municipalityRepository.save(toAdd));
+
                                     finishSuccessfully(runId, Instant.now());
                                     return;
                                 }
