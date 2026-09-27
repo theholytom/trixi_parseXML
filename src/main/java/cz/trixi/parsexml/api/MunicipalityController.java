@@ -2,10 +2,12 @@ package cz.trixi.parsexml.api;
 
 import cz.trixi.parsexml.api.dto.MunicipalityResponse;
 import cz.trixi.parsexml.api.dto.PageResponse;
+import cz.trixi.parsexml.job.MunicipalityService;
 import cz.trixi.parsexml.persistence.repository.MunicipalityRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,13 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class MunicipalityController {
 
     private final MunicipalityRepository repository;
+    private final MunicipalityService service;
 
-    public MunicipalityController(MunicipalityRepository repository) {
+    public MunicipalityController(MunicipalityRepository repository, MunicipalityService service) {
         this.repository = repository;
+        this.service = service;
     }
 
     @GetMapping
     public PageResponse<MunicipalityResponse> listMunicipalities(@PageableDefault(size = 20) Pageable pageable) {
         return PageResponse.from(repository.findAll(pageable).map(MunicipalityResponse::from));
+    }
+
+    @GetMapping("/{id}")
+    public MunicipalityResponse findById(@PathVariable Long id) {
+        return MunicipalityResponse.from(service.findById(id));
     }
 }

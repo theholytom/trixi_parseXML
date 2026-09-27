@@ -29,16 +29,16 @@ public class ParsingTaskController {
         ParsingRun run = service.triggerRun();
         RunTriggerResponse body = new RunTriggerResponse(run.getId(), run.getStatus(), run.getStartedAt());
         return ResponseEntity.accepted()
-                .location(URI.create("/api/v1/task/runs/" + run.getId()))
+                .location(URI.create("/api/v1/task/" + run.getId()))
                 .body(body);
     }
 
-    @GetMapping("/runs/{id}")
+    @GetMapping("/{id}")
     public RunResponse getRunById(@PathVariable Long id) {
         return RunResponse.from(service.findById(id));
     }
     
-    @GetMapping("/runs")
+    @GetMapping
     public PageResponse<RunResponse> listRuns(
             @RequestParam(required = false) RunStatus status,
             @PageableDefault(size = 20) Pageable pageable) {
