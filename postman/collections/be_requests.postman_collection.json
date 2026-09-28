@@ -1,0 +1,246 @@
+{
+  "info": {
+    "_postman_id": "55bdc05b-10d1-4ac2-9d36-0ee161bbb469",
+    "name": "be_requests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "config controller",
+      "item": [
+        {
+          "name": "Get resource url",
+          "id": "4f5fad63-c7d7-4b3d-84d1-115c1e339017",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/config/url",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "config",
+                "url"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change resource url",
+          "id": "a61136c6-2769-4291-9577-5ede46eabd93",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "example.com",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/config/url",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "config",
+                "url"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "6904c758-cc78-4dc5-a656-71b62a56ced6"
+    },
+    {
+      "name": "parsing task controller",
+      "item": [
+        {
+          "name": "Get all runs",
+          "id": "8cecf72a-cc98-4840-b0b8-003d595b9ba6",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/tasks",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "tasks"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get run by id",
+          "id": "acaaf787-834f-4055-b93b-76cf94768f73",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/tasks/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Start run",
+          "id": "e44de88c-6120-4731-9744-349e8a5249b5",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/tasks/run",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "run"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "09c52308-8353-4a17-b98a-62884c889c95"
+    },
+    {
+      "name": "municipality controller",
+      "item": [
+        {
+          "name": "Get all municipalities",
+          "id": "8794a518-fe88-4acb-beec-948195e5cc0b",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/municipalities",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "municipalities"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get municipality by id",
+          "id": "70f0254b-fc50-4dfe-b5c1-96ee971b3814",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/municipalities/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "municipalities",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "76fcd3bf-05d2-457d-97ca-3b20ce77653a"
+    },
+    {
+      "name": "municipality part controller",
+      "item": [
+        {
+          "name": "Get all municipality parts",
+          "id": "e484cfbc-0eac-42b5-9ae1-a28de952d91c",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/municipality_parts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "municipality_parts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get municipality part by id",
+          "id": "a11274eb-85fb-4d4c-8cf4-1380f5e7ec60",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/municipality_parts/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "municipality_parts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "4ea46008-239c-47d6-8abf-7ce45fcdbd17"
+    }
+  ]
+}
