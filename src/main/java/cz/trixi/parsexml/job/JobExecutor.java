@@ -5,6 +5,8 @@ import cz.trixi.parsexml.persistence.entity.MunicipalityPart;
 import cz.trixi.parsexml.persistence.entity.ParsingRun;
 import cz.trixi.parsexml.persistence.repository.MunicipalityRepository;
 import cz.trixi.parsexml.persistence.repository.ParsingRunRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,7 @@ import java.util.zip.ZipInputStream;
 @Component
 public class JobExecutor {
 
+    private static final Logger log = LoggerFactory.getLogger(JobExecutor.class);
     private final UrlSourceConnector connector;
     private final MunicipalityRepository municipalityRepository;
     private final ParsingRunRepository runRepository;
@@ -38,12 +41,15 @@ public class JobExecutor {
 
     @Async("parsingExecutor")
     public void execute(Long runId) {
+        log.info("Starting execute() for runId={}", runId);
 
         byte[] zipBytes;
 
         try {
             zipBytes = connector.callApiEndpoint();
+            log.info("Downloaded ZIP payload for runId={}, size={} bytes", runId, zipBytes.length);
         } catch (Exception e) {
+            log.error("Failed downloading ZIP payload for runId={}", runId, e);
             finishWithFailure(runId, Instant.now());
             throw new RuntimeException(e.getMessage(), e.getCause());
         }
@@ -61,8 +67,10 @@ public class JobExecutor {
             while ((entry = zipStream.getNextEntry()) != null) {
                 String name = entry.getName().toLowerCase(Locale.ROOT);
                 if (!name.endsWith(".xml")) {
+                    log.debug("Skipping non-XML ZIP entry '{}' for runId={}", entry.getName(), runId);
                     continue;
                 }
+                log.info("Processing XML ZIP entry '{}' for runId={}", entry.getName(), runId);
 
                 XMLStreamReader reader = factory.createXMLStreamReader(zipStream, StandardCharsets.UTF_8.name());
                 try {
@@ -136,28 +144,36 @@ public class JobExecutor {
 
                                     municipalityRepository.findByCode(toAdd.getCode())
                                             .map(existing -> {
+                                                log.info("Updating existing municipality code={} for runId={}", existing.getCode(), runId);
                                                 existing.setName(toAdd.getName());
                                                 existing.setParts(toAdd.getParts());
                                                 for (MunicipalityPart part : existing.getParts()) {
                                                     part.setMunicipality(existing);
                                                 }
                                                 return municipalityRepository.save(existing);
-                                            }).orElseGet(() -> municipalityRepository.save(toAdd));
+                                            }).orElseGet(() -> {
+                                                log.info("Creating new municipality code={} for runId={}", toAdd.getCode(), runId);
+                                                return municipalityRepository.save(toAdd);
+                                            });
 
                                     finishSuccessfully(runId, Instant.now());
+                                    log.info("Finished execute() successfully for runId={}", runId);
                                     return;
                                 }
                             }
                         }
                     }
                 } catch (Exception e) {
+                    log.error("Failed while parsing/storing data for runId={}", runId, e);
                     finishWithFailure(runId, Instant.now());
                     throw new RuntimeException("Failed to complete execute() method", e);
                 }
             }
+            log.error("No XML file found in ZIP for runId={}", runId);
             finishWithFailure(runId, Instant.now());
             throw new IllegalStateException("No XML file found in ZIP");
         } catch (IOException | XMLStreamException e) {
+            log.error("Failed to parse XML from ZIP payload for runId={}", runId, e);
             finishWithFailure(runId, Instant.now());
             throw new IllegalStateException("Failed to parse XML from ZIP payload", e);
         }
@@ -177,4 +193,3 @@ public class JobExecutor {
         });
     }
 }
-

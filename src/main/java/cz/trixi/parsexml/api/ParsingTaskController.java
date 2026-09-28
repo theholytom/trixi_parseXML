@@ -6,6 +6,8 @@ import cz.trixi.parsexml.api.dto.RunTriggerResponse;
 import cz.trixi.parsexml.job.ParsingRunService;
 import cz.trixi.parsexml.persistence.entity.ParsingRun;
 import cz.trixi.parsexml.persistence.entity.enums.RunStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.net.URI;
 @RequestMapping("/tasks")
 public class ParsingTaskController {
 
+    private static final Logger log = LoggerFactory.getLogger(ParsingTaskController.class);
     private final ParsingRunService service;
 
 
@@ -26,6 +29,7 @@ public class ParsingTaskController {
 
     @PostMapping("/run")
     public ResponseEntity<RunTriggerResponse> triggerRun() {
+        log.info("Endpoint call: POST /tasks/run");
         ParsingRun run = service.triggerRun();
         RunTriggerResponse body = new RunTriggerResponse(run.getId(), run.getStatus(), run.getStartedAt());
         return ResponseEntity.accepted()
@@ -35,6 +39,7 @@ public class ParsingTaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RunResponse> getRunById(@PathVariable Long id) {
+        log.info("Endpoint call: GET /tasks/{} (id={})", id, id);
         return service.findById(id)
                 .map(RunResponse::from)
                 .map(ResponseEntity::ok)
@@ -45,6 +50,7 @@ public class ParsingTaskController {
     public PageResponse<RunResponse> listRuns(
             @RequestParam(required = false) RunStatus status,
             @PageableDefault(size = 20) Pageable pageable) {
+        log.info("Endpoint call: GET /tasks (status={}, page={}, size={})", status, pageable.getPageNumber(), pageable.getPageSize());
         return PageResponse.from(service.searchRuns(status, pageable));
     }
 }
