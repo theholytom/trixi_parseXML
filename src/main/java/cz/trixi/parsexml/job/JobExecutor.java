@@ -38,7 +38,16 @@ public class JobExecutor {
 
     @Async("parsingExecutor")
     public void execute(Long runId) {
-        byte[] zipBytes = connector.callApiEndpoint();
+
+        byte[] zipBytes;
+
+        try {
+            zipBytes = connector.callApiEndpoint();
+        } catch (Exception e) {
+            finishWithFailure(runId, Instant.now());
+            throw new RuntimeException(e.getMessage(), e.getCause());
+        }
+
         XMLInputFactory factory = XMLInputFactory.newFactory();
 
         factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
@@ -146,9 +155,10 @@ public class JobExecutor {
                     throw new RuntimeException("Failed to complete execute() method", e);
                 }
             }
-
+            finishWithFailure(runId, Instant.now());
             throw new IllegalStateException("No XML file found in ZIP");
         } catch (IOException | XMLStreamException e) {
+            finishWithFailure(runId, Instant.now());
             throw new IllegalStateException("Failed to parse XML from ZIP payload", e);
         }
     }
